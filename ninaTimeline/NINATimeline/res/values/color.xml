@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sms_recive">#FF6C13</color>
+    <color name="smstext">#000000</color>
+    <color name="call_out">#1B9EC9</color>
+    <color name="callText">#FFFFFF</color>
+    <color name="sms_send_text">#A2D559</color>
+    <color name="call_in">#6C38F0</color>
+
+    
+</resources>
