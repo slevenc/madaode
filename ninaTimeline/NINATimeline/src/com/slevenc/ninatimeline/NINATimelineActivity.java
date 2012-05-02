@@ -10,12 +10,12 @@ public class NINATimelineActivity extends Activity {
 	/** Called when the activity is first created. */
 
 	private ListView dataList = null;
-	private TimeLineList tll = null; 
+	private SMSTimeLine tll = null; 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ListView listView = (ListView) LayoutInflater.from(this).inflate(R.layout.timeline, null);
-        tll = new TimeLineList(this);
+        tll = new SMSTimeLine(this);
         listView.setAdapter(tll);
         this.setContentView(listView);
     }

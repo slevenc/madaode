@@ -6,6 +6,12 @@
     <color name="callText">#FFFFFF</color>
     <color name="sms_send_text">#A2D559</color>
     <color name="call_in">#6C38F0</color>
+    <color name="BR_color1">#CF4662</color>
+    <color name="BR_color2">#FFFFFF</color>
+    <color name="BR_TEXT">#0665B5</color>
+    <color name="GM_color2">#000000</color>
+    <color name="GM_color1">#0A397F</color>
+    <color name="GM_text">#ffffff</color>
 
     
 </resources>
