@@ -29,15 +29,15 @@ public class SMSTimeLine extends BaseAdapter {
 	}
 
 	public Object getItem(int arg0) {
-		while(arg0>dataList.size()){
-			if(initData() == 0){
+		while (arg0 > dataList.size()) {
+			if (initData() == 0) {
 				break;
 			}
 		}
-		if(arg0>=dataList.size()){
-			arg0 = dataList.size()-1;
+		if (arg0 >= dataList.size()) {
+			arg0 = dataList.size() - 1;
 		}
-		
+
 		return dataList.get(arg0);
 	}
 
@@ -47,17 +47,16 @@ public class SMSTimeLine extends BaseAdapter {
 
 	public View getView(int arg0, View arg1, ViewGroup arg2) {
 
-		while(arg0>dataList.size()){
-			if(initData() == 0){
+		while (arg0 >= dataList.size()) {
+			if (initData() == 0) {
 				break;
 			}
 		}
-		if(arg0>=dataList.size()){
-			arg0 = dataList.size()-1;
+		if (arg0 >= dataList.size()) {
+			arg0 = dataList.size() - 1;
 		}
 		View view = LayoutInflater.from(context).inflate(R.layout.smsview, null);
 
-		
 		TextView address = (TextView) view.findViewById(R.id.address);
 		TextView body = (TextView) view.findViewById(R.id.body);
 		TextView date = (TextView) view.findViewById(R.id.date);
@@ -75,7 +74,6 @@ public class SMSTimeLine extends BaseAdapter {
 		}
 		body.setText(dataList.get(arg0).get("body"));
 		date.setText(formatDateLong(dataList.get(arg0).get("date")));
-		
 
 		String smsType = dataList.get(arg0).get("smsType");
 		String forword = "";
@@ -85,9 +83,9 @@ public class SMSTimeLine extends BaseAdapter {
 			forword = "TO ";
 		}
 		address.setText(forword.concat(addressText));
-		if(arg0%2 == 0){
+		if (arg0 % 2 == 0) {
 			view.setBackgroundResource(R.color.BR_color1);
-		}else{
+		} else {
 			view.setBackgroundResource(R.color.BR_color2);
 		}
 		smsDialogListener vu = new smsDialogListener(num, context);
@@ -113,11 +111,11 @@ public class SMSTimeLine extends BaseAdapter {
 		this.context = context;
 		this.pageSize = pageSize;
 		this.dataList = new ArrayList<Map<String, String>>();
-		cache = new ContactCache(context);	
+		cache = new ContactCache(context);
 	}
 
 	public SMSTimeLine(Context context) {
-		init(context, 30);
+		init(context, 2);
 	}
 
 	public SMSTimeLine(Context context, int pageSize) {
@@ -135,12 +133,13 @@ public class SMSTimeLine extends BaseAdapter {
 			sms.put("type", "sms");
 		}
 		dataList.addAll(smsList);
-		return smsList.size(); 
+		this.notifyDataSetChanged();
+		return smsList.size();
 	}
-	
-	private void queryCount(){
+
+	private void queryCount() {
 		ContentResolver cr = context.getContentResolver();
-		Cursor cur  = cr.query(Uri.parse("content://sms/"), new String[]{"_id"}, null, null, null);
+		Cursor cur = cr.query(Uri.parse("content://sms/"), new String[] { "_id" }, null, null, null);
 		cur.close();
 		totalCount = cur.getCount();
 	}
