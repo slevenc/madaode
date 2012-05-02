@@ -41,9 +41,11 @@ public class NINATimelineActivity extends Activity {
 
 	private void loadSMS() {
 		lv.setAdapter(stl);
+		this.setTitle("短信");
 	}
 	private void loadCall(){
 		lv.setAdapter(ctl);
+		this.setTitle("通话");
 	}
 
 	@Override

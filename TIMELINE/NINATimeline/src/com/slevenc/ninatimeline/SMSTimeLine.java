@@ -47,6 +47,7 @@ public class SMSTimeLine extends BaseAdapter {
 
 	public View getView(int arg0, View arg1, ViewGroup arg2) {
 
+//		logger.info("require:" + arg0);
 		while (arg0 >= dataList.size()) {
 			if (initData() == 0) {
 				break;
@@ -54,6 +55,7 @@ public class SMSTimeLine extends BaseAdapter {
 		}
 		if (arg0 >= dataList.size()) {
 			arg0 = dataList.size() - 1;
+			logger.info("rePO");
 		}
 		View view = LayoutInflater.from(context).inflate(R.layout.smsview, null);
 
@@ -78,9 +80,9 @@ public class SMSTimeLine extends BaseAdapter {
 		String smsType = dataList.get(arg0).get("smsType");
 		String forword = "";
 		if (smsType.equals("1")) {
-			forword = "FROM ";
+			forword = "From ";
 		} else {
-			forword = "TO ";
+			forword = "To ";
 		}
 		address.setText(forword.concat(addressText));
 		if (arg0 % 2 == 0) {
@@ -115,7 +117,7 @@ public class SMSTimeLine extends BaseAdapter {
 	}
 
 	public SMSTimeLine(Context context) {
-		init(context, 2);
+		init(context, 30);
 	}
 
 	public SMSTimeLine(Context context, int pageSize) {
@@ -123,6 +125,7 @@ public class SMSTimeLine extends BaseAdapter {
 	}
 
 	private int initData() {
+//		logger.info("query!");
 		queryCount();
 		String uri = "content://sms/";
 		String[] projections = { "_id", "address", "body", "date", "type as smsType" };
