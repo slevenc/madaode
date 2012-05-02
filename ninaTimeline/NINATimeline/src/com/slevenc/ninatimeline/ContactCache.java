@@ -67,6 +67,7 @@ public class ContactCache {
 					byte[] ba = cur.getBlob(0);
 					ct.setHead(BitmapFactory.decodeByteArray(ba, 0, ba.length));
 				}
+				cur.close();
 			}
 		}
 		return ct;

@@ -67,7 +67,9 @@ public class ContentResolverPageQuery {
 		Uri u = Uri.parse(uri);
 		Cursor cur = contentResolver.query(u, projection, selection, values, order);
 		logger.info("查询结果长度:" + cur.getCount());
-		return getDate(cur, start, rows);
+		List<Map<String, String>> returnData =  getDate(cur, start, rows);
+		cur.close();
+		return returnData;
 	}
 
 	private List<Map<String, String>> getDate(Cursor cur, int start, int rows) {

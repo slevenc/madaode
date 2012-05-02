@@ -29,6 +29,15 @@ public class SMSTimeLine extends BaseAdapter {
 	}
 
 	public Object getItem(int arg0) {
+		while(arg0>dataList.size()){
+			if(initData() == 0){
+				break;
+			}
+		}
+		if(arg0>=dataList.size()){
+			arg0 = dataList.size()-1;
+		}
+		
 		return dataList.get(arg0);
 	}
 
@@ -39,10 +48,16 @@ public class SMSTimeLine extends BaseAdapter {
 	public View getView(int arg0, View arg1, ViewGroup arg2) {
 
 		while(arg0>dataList.size()){
-			initData(); 
+			if(initData() == 0){
+				break;
+			}
+		}
+		if(arg0>=dataList.size()){
+			arg0 = dataList.size()-1;
 		}
 		View view = LayoutInflater.from(context).inflate(R.layout.smsview, null);
 
+		
 		TextView address = (TextView) view.findViewById(R.id.address);
 		TextView body = (TextView) view.findViewById(R.id.body);
 		TextView date = (TextView) view.findViewById(R.id.date);
@@ -58,24 +73,23 @@ public class SMSTimeLine extends BaseAdapter {
 				head.setImageBitmap(ct.getHead());
 			}
 		}
-		address.setText(addressText);
 		body.setText(dataList.get(arg0).get("body"));
 		date.setText(formatDateLong(dataList.get(arg0).get("date")));
+		
 
 		String smsType = dataList.get(arg0).get("smsType");
+		String forword = "";
 		if (smsType.equals("1")) {
-			img.setImageResource(R.drawable.in);
+			forword = "FROM ";
 		} else {
-			img.setImageResource(R.drawable.out);
+			forword = "TO ";
 		}
+		address.setText(forword.concat(addressText));
 		if(arg0%2 == 0){
 			view.setBackgroundResource(R.color.BR_color1);
 		}else{
 			view.setBackgroundResource(R.color.BR_color2);
 		}
-		
-		
-
 		smsDialogListener vu = new smsDialogListener(num, context);
 		view.setOnClickListener(vu);
 
@@ -100,7 +114,6 @@ public class SMSTimeLine extends BaseAdapter {
 		this.pageSize = pageSize;
 		this.dataList = new ArrayList<Map<String, String>>();
 		cache = new ContactCache(context);	
-		initData();
 	}
 
 	public SMSTimeLine(Context context) {
@@ -111,36 +124,39 @@ public class SMSTimeLine extends BaseAdapter {
 		init(context, pageSize);
 	}
 
-	private void initData() {
+	private int initData() {
 		queryCount();
 		String uri = "content://sms/";
 		String[] projections = { "_id", "address", "body", "date", "type as smsType" };
 		String order = "date desc";
 		ContentResolverPageQuery query = new ContentResolverPageQuery(context);
-		List<Map<String, String>> smsList = query.query(uri, projections, null, null, order, dataList.size() + 1, pageSize);
+		List<Map<String, String>> smsList = query.query(uri, projections, null, null, order, dataList.size(), pageSize);
 		for (Map<String, String> sms : smsList) {
 			sms.put("type", "sms");
 		}
 		dataList.addAll(smsList);
+		return smsList.size(); 
 	}
 	
 	private void queryCount(){
 		ContentResolver cr = context.getContentResolver();
 		Cursor cur  = cr.query(Uri.parse("content://sms/"), new String[]{"_id"}, null, null, null);
+		cur.close();
 		totalCount = cur.getCount();
 	}
 
 	public void clear() {
 		dataList.clear();
-		this.notifyDataSetChanged();
-		initData();
 		this.totalCount = 0;
+		initData();
+		queryCount();
+		this.notifyDataSetChanged();
 	}
 
 	private String formatDateLong(String longDate) {
 		long dl = Long.parseLong(longDate);
 		Date d = new Date(dl);
-		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd\nHH:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd\nHH:mm:ss");
 		return sdf.format(d);
 	}
 
