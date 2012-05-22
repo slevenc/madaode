@@ -77,5 +77,12 @@ public class MainDialog extends JFrame {
 		}
 
 	}
+	
+	//mian方法
+	public static void main(String[] args) {
+		MainDialog md = new MainDialog();
+
+		md.setVisible(true);
+	}
 
 }
