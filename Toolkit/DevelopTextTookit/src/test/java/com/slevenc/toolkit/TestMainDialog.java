@@ -1,15 +1,19 @@
 package com.slevenc.toolkit;
 
-import org.junit.Test;
+import com.opensymphony.xwork2.util.finder.ClassFinder;
+import com.opensymphony.xwork2.util.finder.ClassLoaderInterfaceDelegate;
+import com.slevenc.toolkit.ui.MainDialog;
 
 public class TestMainDialog {
 
 	// @Test
 	public void testIt() {
 
-		MainDialog md = new MainDialog();
-
-		md.setVisible(true);
+		try {
+			ClassFinder cf = new ClassFinder(new ClassLoaderInterfaceDelegate(Thread.currentThread().getContextClassLoader()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) {
